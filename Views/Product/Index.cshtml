@@ -1,0 +1,97 @@
+﻿@model List<Model.ViewModel.ProductViewModel>
+
+@{
+    ViewBag.Title = "Product";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-body" style="padding:30px;">
+        @using (Html.BeginForm("Index", "Product", FormMethod.Get))
+        {
+            <div class="row">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped verticle-middle ">
+                        <thead>
+                            <tr>
+                                <th scope="col">Code</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">NameCategory</th>
+                                <th scope="col">MetaTitle</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr id="row_@item.ID">
+                                    <td>@item.Code</td>
+                                    <td>@item.Name</td>
+                                    <td>@item.CateName</td>
+                                    <td>@item.MetaTitle</td>
+                                    <td>@item.Price $</td>
+                                    <td>@item.Quantity</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            @{
+                                int numberPage = ViewBag.numberPage;
+                                int pageCurrent = ViewBag.pageCurrent;
+                                int nextPage = pageCurrent + 1;
+                                int prePage = pageCurrent - 1;
+                                var searchString = ViewBag.SearchString;
+                                if (pageCurrent > 1)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=@prePage&searchString=@searchString" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                    </li>
+                                }
+                                if (numberPage > 3)
+                                {
+                                    if (pageCurrent != 1)
+                                    {
+                                        <li class="page-item"><a class="page-link" href="?page=@prePage&searchString=@searchString">@prePage</a></li>
+                                    }
+                                    <li class="page-item"><a class="page-link" href="?page=@pageCurrent&searchString=@searchString">@pageCurrent</a></li>
+                                    if (pageCurrent < numberPage)
+                                    {
+                                        <li class="page-item"><a class="page-link" href="?page=@nextPage&searchString=@searchString">@nextPage</a></li>
+                                    }
+                                    if (pageCurrent != numberPage)
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page=@nextPage&searchString=@searchString" aria-label="Next">
+                                                <span aria-hidden="true">&raquo;</span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                        </li>
+                                    }
+                                }
+                                else
+                                {
+                                    for (int i = 1; i <= numberPage; i++)
+                                    {
+                                        <li class="page-item"><a class="page-link" href="?page=@i&searchString=@searchString">@i</a></li>
+                                    }
+                                }
+                            }
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+@section scripts{
+}
+
+
