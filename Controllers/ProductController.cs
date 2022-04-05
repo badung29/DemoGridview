@@ -24,57 +24,21 @@ namespace DemoGridview.Controllers
             return View(model);
         }
         [HttpGet]
-        public ActionResult CreateNewProduct()
+        public ActionResult DetailProduct(int id)
         {
+            var product = new ProductDao().ViewDetail(id);
             ProductViewModel cate = new ProductViewModel();
+            cate.ID = product.ID;
+            cate.CategoryID = product.CategoryID;
+            cate.Name = product.Name;
+            cate.Code = product.Code;
+            cate.Description = product.Description;
+            cate.MetaTitle = product.MetaTitle;
+            cate.Price = (decimal)product.Price;
+            cate.Quantity = product.Quantity;
             var dao = new CategoryDao();
             cate.CateCollection = dao.ListAll();
-            return PartialView("CreateProduct", cate);
-        }
-
-        [HttpPost]
-        public ActionResult CreateProduct(ProductViewModel data)
-        {
-            var Catedao = new CategoryDao();
-            data.CateCollection = Catedao.ListAll();
-            if (ModelState.IsValid)
-            {
-                var dao = new ProductDao();
-                if (dao.CheckProductName(data.Name))
-                {
-                    ModelState.AddModelError("", "Duplicate product name!");
-                }
-                else if (dao.CheckProductCode(data.Code))
-                {
-                    ModelState.AddModelError("", "Duplicate product code!");
-                }
-                else if (data.Price == 0)
-                {
-                    ModelState.AddModelError("", "Please enter the price!");
-                }
-                else if (data.Quantity == 0)
-                {
-                    ModelState.AddModelError("", "Please enter the quantity!");
-                }
-                else
-                {
-                    var product = new Product();
-                    product.Name = data.Name;
-                    product.Code = data.Code;
-                    product.Description = data.Description;
-                    product.Price = data.Price;
-                    product.Quantity = data.Quantity;
-                    product.Status = data.Status;
-                    product.CategoryID = data.CategoryID;
-                    long id = dao.Insert(product);
-                    if (id > 0)
-                    {
-                        TempData["SuccessMessage"] = "Product " + product.Name + " Created Successfully!";
-                        return Json(true, JsonRequestBehavior.AllowGet);
-                    }
-                }
-            }
-            return PartialView("CreateProduct", data);
+            return PartialView("DetailProduct", cate);
         }
 
         [HttpGet]
@@ -87,9 +51,9 @@ namespace DemoGridview.Controllers
             cate.Name = product.Name;
             cate.Code = product.Code;
             cate.Description = product.Description;
+            cate.MetaTitle = product.MetaTitle;
             cate.Price = (decimal)product.Price;
             cate.Quantity = product.Quantity;
-            cate.Status = product.Status;
             var dao = new CategoryDao();
             cate.CateCollection = dao.ListAll();
             return PartialView("EditProduct", cate);
@@ -117,15 +81,14 @@ namespace DemoGridview.Controllers
                     product.Name = data.Name;
                     product.Code = data.Code;
                     product.Description = data.Description;
+                    product.MetaTitle = data.MetaTitle;
                     product.Price = data.Price;
                     product.Quantity = data.Quantity;
-                    product.Status = data.Status;
                     product.CategoryID = data.CategoryID;
                     var dao = new ProductDao();
                     var result = dao.Update(product);
                     if (result)
                     {
-                        //SetAlert("Saved Successfully", "success");
                         TempData["SuccessMessage"] = "Product " + product.Name + " Saved Successfully";
                         return Json(true, JsonRequestBehavior.AllowGet);
                     }
@@ -137,26 +100,17 @@ namespace DemoGridview.Controllers
             }
             return PartialView("EditProduct", data);
         }
+
         [HttpPost]
-        public JsonResult DeleteSelectedCheckbox(string[] data)
+        public JsonResult DeleteProduct(int id)
         {
-            if (data != null)
+            if (id != 0)
             {
-                foreach (var id in data)
-                {
-                    new ProductDao().Delete(Convert.ToInt32(id));
-                }
+                new ProductDao().Delete(id);
             }
             else { return Json(new { status = false }); }
 
             return Json(new { status = true });
-        }
-
-        [HttpPost]
-        public JsonResult ChangeStatus(long id)
-        {
-            var result = new ProductDao().ChangeStatus(id);
-            return Json(new { status = result });
         }
     }
 }

@@ -4,7 +4,13 @@
     ViewBag.Title = "Product";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="myModalBody">
 
+        </div>
+    </div>
+</div>
 <div class="card shadow mb-4">
     <div class="card-body" style="padding:30px;">
         @using (Html.BeginForm("Index", "Product", FormMethod.Get))
@@ -22,7 +28,7 @@
                                 <th scope="col">Quantity</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tbody">
                             @foreach (var item in Model)
                             {
                                 <tr id="row_@item.ID">
@@ -89,9 +95,128 @@
         }
     </div>
 </div>
+<div id="myMenu">
+    <ul class="menu-items">
+        <li class="detail">Detail</li>
+        <li class="edit">Edit</li>
+        <li class="delete">Delete</li>
+    </ul>
+</div>
+<style type="text/css">
+    #myMenu {
+        position: absolute;
+        border: solid 1px #CCC;
+        width: 100px;
+        background: #EEE;
+        box-shadow: 2px 3px 3px #9b9b9b;
+        border-radius: 1px;
+        z-index: 10000;
+        display: none;
+    }
 
+    .menu-items {
+        list-style: none;
+        margin: 0px;
+        padding: 5px 1px 3px 1px;
+        color: black;
+    }
+
+    .detail, .edit, .delete {
+        padding: 8px;
+        padding-left: 30px;
+        font-size: 12px;
+        font-family: 'Segoe UI';
+    }
+
+    .menu-items li:hover {
+        color: white;
+        background: #9b9b9b;
+        border-radius: 2px;
+        cursor: pointer;
+    }
+</style>
 
 @section scripts{
+    @foreach (var item in Model)
+    {
+        <script type="text/javascript">
+            $('#row_@item.ID').bind("contextmenu", function (e) {
+                e.preventDefault();
+                $('#myMenu').css({
+                    top: e.pageY + 'px',
+                    left: e.pageX + 'px'
+                }).show();
+                $('.detail').off('click').on('click', function (e) {
+                    e.preventDefault();
+                    $('#myMenu').hide();
+                    $.get("/Product/DetailProduct", { id: @item.ID }, function (res) {
+                        $("#myModalBody").html(res);
+                        $("#myModal").modal('show');
+                    })
+                })
+                $('.edit').off('click').on('click', function (e) {
+                    e.preventDefault();
+                    $('#myMenu').hide();
+                    $.get("/Product/EditProduct", { id: @item.ID }, function (res) {
+                        $("#myModalBody").html(res);
+                        $("#myModal").modal('show');
+                    })
+                })
+                $('.delete').off('click').on('click', function (e) {
+                    e.preventDefault();
+                    $('#myMenu').hide();
+                    $.ajax({
+                        url: "/Product/DeleteProduct",
+                        data: { id: @item.ID },
+                        dataType: 'json',
+                        type: 'POST',
+                        success: function (res) {
+                            if (res.status == true) {
+                                $("#row_" + @item.ID).remove();
+                                alert("Delete Success...");
+                            } else {
+                                alert("Delete Error...");
+                            }
+                        }
+                    })
+                })
+            })
+            $(document).ready(function () {
+                $(document).click(function () {
+                    $('#myMenu').hide();
+                });
+            });
+        </script>
+    }
+
+    <script type="text/javascript">
+        function updateProduct(id) {
+            var form = $('form[name="productForm"]');
+            var newForm = form.add('<input name="ID" value="' + id + '" /> ');
+            var data = newForm.serialize();
+            $.post("/Product/UpdateProduct", data, function (res) {
+                if (res == true) {
+                    window.location.href = "/Product/Index";
+                } else {
+                    $("#myModalBody").html(res);
+                    $("#myModal").modal('show');
+                }
+            })
+        }
+    </script>
+
+    <script type="text/javascript">
+        function openSuccessModal(strMessage) {
+            var myDiv = document.getElementById("MyModalSuccessAlertBody");
+            myDiv.innerHTML = strMessage;
+            $('#myModalSuccess').modal('show');
+        }
+        $(document).ready(function () {
+            var msg = "@TempData["SuccessMessage"]";
+            if (msg)
+                openSuccessModal(msg);
+        });
+    </script>
 }
 
 

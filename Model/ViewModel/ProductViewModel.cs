@@ -24,7 +24,7 @@ namespace Model.ViewModel
         [StringLength(10)]
         public string Code { get; set; }
 
-        [Display(Name = "Title")]
+        [Display(Name = "MetaTitle")]
         [StringLength(250)]
         public string MetaTitle { get; set; }
 
