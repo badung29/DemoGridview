@@ -32,12 +32,12 @@
                             @foreach (var item in Model)
                             {
                                 <tr id="row_@item.ID">
-                                    <td>@item.Code</td>
-                                    <td>@item.Name</td>
-                                    <td>@item.CateName</td>
-                                    <td>@item.MetaTitle</td>
-                                    <td>@item.Price $</td>
-                                    <td>@item.Quantity</td>
+                                    <td class="col">@item.Code</td>
+                                    <td class="col">@item.Name</td>
+                                    <td class="col">@item.CateName</td>
+                                    <td class="col">@item.MetaTitle</td>
+                                    <td class="col">@item.Price $</td>
+                                    <td class="col">@item.Quantity</td>
                                 </tr>
                             }
                         </tbody>
@@ -135,11 +135,10 @@
         cursor: pointer;
     }
 
-    .table th{
+    .table th {
         background-color: darkblue;
-        color :#ffffff;
+        color: #ffffff;
     }
-    
 </style>
 
 @section scripts{
