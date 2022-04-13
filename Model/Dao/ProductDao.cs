@@ -58,7 +58,7 @@ namespace Model.Dao
             catch (Exception) { return false; }
         }
 
-        public IEnumerable<ProductViewModel> ListAllPaging(string searchString, int page, int pageSize)
+        public IEnumerable<ProductViewModel> ListAllPaging()
         {
             IQueryable<ProductViewModel> model = from product in db.Products
                                                  join productCategory in db.ProductCategories
@@ -74,17 +74,11 @@ namespace Model.Dao
                                                      MetaTitle = product.MetaTitle,
                                                      Price = (decimal)product.Price,
                                                      Quantity = product.Quantity
-                                                 };
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                model = model.Where(x => x.Name.Contains(searchString) || x.CateName.Contains(searchString));
-            }
-            int start = (page - 1) * pageSize;
-            var dataProduct = model.OrderByDescending(x => x.ID).Skip(start).Take(pageSize);
-            return dataProduct.ToList();
+                                                 };                       
+            return model.ToList();
         }
 
-        public int CountProduct(string searchString)
+        public int CountProduct()
         {
             IQueryable<ProductViewModel> model = from product in db.Products
                                                  join productCategory in db.ProductCategories
@@ -99,11 +93,7 @@ namespace Model.Dao
                                                      Code = product.Code,
                                                      Price = (decimal)product.Price,
                                                      Quantity = product.Quantity
-                                                 };
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                model = model.Where(x => x.Name.Contains(searchString) || x.CateName.Contains(searchString));
-            }
+                                                 };           
             return model.Count();
         }
 
