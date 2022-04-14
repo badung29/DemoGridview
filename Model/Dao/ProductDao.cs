@@ -11,6 +11,7 @@ namespace Model.Dao
     public class ProductDao
     {
         OnlineShopDbContext db = null;
+
         public ProductDao()
         {
             db = new OnlineShopDbContext();
@@ -76,25 +77,6 @@ namespace Model.Dao
                                                      Quantity = product.Quantity
                                                  };                       
             return model.ToList();
-        }
-
-        public int CountProduct()
-        {
-            IQueryable<ProductViewModel> model = from product in db.Products
-                                                 join productCategory in db.ProductCategories
-                                                 on product.CategoryID equals productCategory.ID
-                                                 select new ProductViewModel()
-                                                 {
-                                                     CateMetaTitle = productCategory.MetaTitle,
-                                                     CateName = productCategory.Name,
-                                                     Status = product.Status,
-                                                     ID = product.ID,
-                                                     Name = product.Name,
-                                                     Code = product.Code,
-                                                     Price = (decimal)product.Price,
-                                                     Quantity = product.Quantity
-                                                 };           
-            return model.Count();
         }
 
         public Product ViewDetail(long id)

@@ -18,6 +18,5 @@ namespace Model.Dao
         {
             return db.ProductCategories.Where(x => x.Status == true).ToList();
         }
-
     }
 }
