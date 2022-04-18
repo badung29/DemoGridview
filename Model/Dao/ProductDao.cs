@@ -63,12 +63,11 @@ namespace Model.Dao
         {
             IQueryable<ProductViewModel> model = from product in db.Products
                                                  join productCategory in db.ProductCategories
-                                                 on product.CategoryID equals productCategory.ID
+                                                 on product.CategoryID equals productCategory.ID into temp
+                                                 from tem in temp.DefaultIfEmpty()
                                                  select new ProductViewModel()
                                                  {
-                                                     CateMetaTitle = productCategory.MetaTitle,
-                                                     CateName = productCategory.Name,
-                                                     Status = product.Status,
+                                                     CateName = tem.Name != null ? tem.Name : "No Category",
                                                      ID = product.ID,
                                                      Name = product.Name,
                                                      Code = product.Code,
