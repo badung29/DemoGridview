@@ -13,16 +13,17 @@ namespace DemoGridview.Controllers
     {
         // GET: Product
         public ActionResult Index()
-        {           
+        {
             return View();
         }
 
         [HttpGet]
-        public ActionResult GetListData()
+        public ActionResult GetListData(int page = 1, int pageSize = 5)
         {
             var dao = new ProductDao();
-            var data = dao.ListAllPaging();
-            return Json(data, JsonRequestBehavior.AllowGet);
+            int totalProduct = dao.CountProduct();
+            var dataProduct = dao.ListAllPaging(page, pageSize);
+            return Json(new { total = totalProduct, data = dataProduct },JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

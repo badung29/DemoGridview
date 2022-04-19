@@ -59,7 +59,7 @@ namespace Model.Dao
             catch (Exception) { return false; }
         }
 
-        public IEnumerable<ProductViewModel> ListAllPaging()
+        public IEnumerable<ProductViewModel> ListAllPaging(int page, int pageSize)
         {
             IQueryable<ProductViewModel> model = from product in db.Products
                                                  join productCategory in db.ProductCategories
@@ -74,10 +74,31 @@ namespace Model.Dao
                                                      MetaTitle = product.MetaTitle,
                                                      Price = (decimal)product.Price,
                                                      Quantity = product.Quantity
-                                                 };                       
-            return model.ToList();
+                                                 };
+            int start = (page - 1) * pageSize;
+            var dataProduct = model.OrderBy(x => x.ID).Skip(start).Take(pageSize).ToList();
+            return dataProduct;
         }
 
+        public int CountProduct()
+        {
+            IQueryable<ProductViewModel> model = from product in db.Products
+                                                 join productCategory in db.ProductCategories
+                                                 on product.CategoryID equals productCategory.ID into temp
+                                                 from tem in temp.DefaultIfEmpty()
+                                                 select new ProductViewModel()
+                                                 {
+                                                     CateName = tem.Name != null ? tem.Name : "No Category",
+                                                     ID = product.ID,
+                                                     Name = product.Name,
+                                                     Code = product.Code,
+                                                     MetaTitle = product.MetaTitle,
+                                                     Price = (decimal)product.Price,
+                                                     Quantity = product.Quantity
+                                                 };
+
+            return model.Count();
+        }
         public Product ViewDetail(long id)
         {
             return db.Products.Find(id);
