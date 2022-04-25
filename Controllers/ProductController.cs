@@ -14,17 +14,18 @@ namespace DemoGridview.Controllers
         // GET: Product
         public ActionResult Index()
         {
-            return View();
+            var dao = new ProductDao();
+            var model = dao.ListAllPaging();
+            return View(model);
         }
 
-        [HttpGet]
-        public ActionResult GetListData(int page = 1, int pageSize = 5)
-        {
-            var dao = new ProductDao();
-            int totalProduct = dao.CountProduct();
-            var dataProduct = dao.ListAllPaging(page, pageSize);
-            return Json(new { total = totalProduct, data = dataProduct },JsonRequestBehavior.AllowGet);
-        }
+        //public ActionResult GetDataProduct(int page, int pageSize)
+        //{
+        //    var dao = new ProductDao();
+        //    int totalProduct = dao.CountProduct();
+        //    var dataProduct = dao.ListAllPaging(page, pageSize);
+        //    return Json(new { total = totalProduct, data = dataProduct }, JsonRequestBehavior.AllowGet);
+        //}
 
         [HttpGet]
         public ActionResult DetailProduct(int id)

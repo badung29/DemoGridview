@@ -59,7 +59,7 @@ namespace Model.Dao
             catch (Exception) { return false; }
         }
 
-        public IEnumerable<ProductViewModel> ListAllPaging(int page, int pageSize)
+        public IEnumerable<ProductViewModel> ListAllPaging()
         {
             IQueryable<ProductViewModel> model = from product in db.Products
                                                  join productCategory in db.ProductCategories
@@ -75,9 +75,7 @@ namespace Model.Dao
                                                      Price = (decimal)product.Price,
                                                      Quantity = product.Quantity
                                                  };
-            int start = (page - 1) * pageSize;
-            var dataProduct = model.OrderBy(x => x.ID).Skip(start).Take(pageSize).ToList();
-            return dataProduct;
+            return model.ToList();
         }
 
         public int CountProduct()

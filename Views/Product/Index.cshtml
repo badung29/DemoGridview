@@ -61,27 +61,14 @@
     <script src="~/Scripts/kendo.all.min.js"></script>
 
     <script type="text/javascript">
-
-        $(document).ready(function () {            
+        $(document).ready(function () {
+            var dataProduct = @Html.Raw((Model != null) ? Newtonsoft.Json.JsonConvert.SerializeObject(Model) : "[]");
             $("#grid").kendoGrid({
-                dataSource: {
-                    transport: {
-                        read: {
-                            url: "/Product/GetListData",
-                            type: "GET",
-                            dataType: "json"
-                        }
-                    },
-                    schema: {
-                        data: "data",
-                        total: "total"
-                    },
-                    pageSize: 5,
-                    serverPaging: true
-                },
+                dataSource: dataProduct,
                 height: 350,
                 pageable: {
-                    pageSizes: [5, 10, 20]
+                    pageSizes: [5, 10, 20],
+                    pageSize: 5
                 },
                 sortable: {
                     mode: "single",
