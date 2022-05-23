@@ -4,6 +4,7 @@
     ViewBag.Title = "Product";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content" id="myModalBody">
@@ -13,86 +14,7 @@
 </div>
 <div class="card shadow mb-4">
     <div class="card-body" style="padding:30px;">
-        @using (Html.BeginForm("Index", "Product", FormMethod.Get))
-        {
-            <div class="row">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped verticle-middle">
-                        <thead>
-                            <tr>
-                                <th scope="col">Code</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">NameCategory</th>
-                                <th scope="col">MetaTitle</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Quantity</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model)
-                            {
-                                <tr id="row_@item.ID">
-                                    <td class="col">@item.Code</td>
-                                    <td class="col">@item.Name</td>
-                                    <td class="col">@item.CateName</td>
-                                    <td class="col">@item.MetaTitle</td>
-                                    <td class="col">@item.Price $</td>
-                                    <td class="col">@item.Quantity</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination">
-                            @{
-                                int numberPage = ViewBag.numberPage;
-                                int pageCurrent = ViewBag.pageCurrent;
-                                int nextPage = pageCurrent + 1;
-                                int prePage = pageCurrent - 1;
-                                var searchString = ViewBag.SearchString;
-                                if (pageCurrent > 1)
-                                {
-                                    <li class="page-item">
-                                        <a class="page-link" href="?page=@prePage&searchString=@searchString" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                            <span class="sr-only">Previous</span>
-                                        </a>
-                                    </li>
-                                }
-                                if (numberPage > 3)
-                                {
-                                    if (pageCurrent != 1)
-                                    {
-                                        <li class="page-item"><a class="page-link" href="?page=@prePage&searchString=@searchString">@prePage</a></li>
-                                    }
-                                    <li class="page-item"><a class="page-link" href="?page=@pageCurrent&searchString=@searchString">@pageCurrent</a></li>
-                                    if (pageCurrent < numberPage)
-                                    {
-                                        <li class="page-item"><a class="page-link" href="?page=@nextPage&searchString=@searchString">@nextPage</a></li>
-                                    }
-                                    if (pageCurrent != numberPage)
-                                    {
-                                        <li class="page-item">
-                                            <a class="page-link" href="?page=@nextPage&searchString=@searchString" aria-label="Next">
-                                                <span aria-hidden="true">&raquo;</span>
-                                                <span class="sr-only">Next</span>
-                                            </a>
-                                        </li>
-                                    }
-                                }
-                                else
-                                {
-                                    for (int i = 1; i <= numberPage; i++)
-                                    {
-                                        <li class="page-item"><a class="page-link" href="?page=@i&searchString=@searchString">@i</a></li>
-                                    }
-                                }
-                            }
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        }
+        <div id="grid" class="target"></div>
     </div>
 </div>
 <div id="myMenu">
@@ -134,65 +56,204 @@
         border-radius: 2px;
         cursor: pointer;
     }
-
-    .table th {
-        background-color: darkblue;
-        color: #ffffff;
-    }
 </style>
 
-@section scripts{
-    @foreach (var item in Model)
+<div class="card-body">
+    @using (Html.BeginForm("Index", "Product", FormMethod.Get))
     {
-        <script type="text/javascript">
-            $('#row_@item.ID').bind("contextmenu", function (e) {
-                e.preventDefault();
-                $('#myMenu').css({
-                    top: e.pageY + 'px',
-                    left: e.pageX + 'px'
-                }).show();
-                $('.detail').off('click').on('click', function (e) {
-                    e.preventDefault();
-                    $('#myMenu').hide();
-                    $.get("/Product/DetailProduct", { id: @item.ID }, function (res) {
-                        $("#myModalBody").html(res);
-                        $("#myModal").modal('show');
-                    })
-                })
-                $('.edit').off('click').on('click', function (e) {
-                    e.preventDefault();
-                    $('#myMenu').hide();
-                    $.get("/Product/EditProduct", { id: @item.ID }, function (res) {
-                        $("#myModalBody").html(res);
-                        $("#myModal").modal('show');
-                    })
-                })
-                $('.delete').off('click').on('click', function (e) {
-                    e.preventDefault();
-                    $('#myMenu').hide();
-                    $.ajax({
-                        url: "/Product/DeleteProduct",
-                        data: { id: @item.ID },
-                        dataType: 'json',
-                        type: 'POST',
-                        success: function (res) {
-                            if (res.status == true) {
-                                $("#row_" + @item.ID).remove();
-                                alert("Delete Success...");
-                            } else {
-                                alert("Delete Error...");
+        <div class="row form-group">
+            <div class="col-lg-4">
+                <input type="text" value="@ViewBag.SearchString" class="form-control" name="searchString" style="width: 200px" />
+            </div>
+            <div class="col-lg-8" style="margin-left:-180px">
+                <button type="submit" class="btn btn-success">Search</button>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-striped verticle-middle sortable ">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">NameCategory</th>
+                            <th scope="col">Code</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr id="row_@item.ID">                           
+                                <td>@item.Name</td>
+                                <td>@item.CateName</td>
+                                <td>@item.Code</td>
+                                <td>@item.Price $</td>
+                                <td>@item.Quantity</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        @{
+                            int numberPage = ViewBag.numberPage;
+                            int pageCurrent = ViewBag.pageCurrent;
+                            int nextPage = pageCurrent + 1;
+                            int prePage = pageCurrent - 1;
+                            var searchString = ViewBag.SearchString;
+                            if (pageCurrent > 1)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=@prePage&searchString=@searchString" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                </li>
+                            }
+                            if (numberPage > 3)
+                            {
+                                if (pageCurrent != 1)
+                                {
+                                    <li class="page-item"><a class="page-link" href="?page=@prePage&searchString=@searchString">@prePage</a></li>
+                                }
+                                <li class="page-item"><a class="page-link" href="?page=@pageCurrent&searchString=@searchString">@pageCurrent</a></li>
+                                if (pageCurrent < numberPage)
+                                {
+                                    <li class="page-item"><a class="page-link" href="?page=@nextPage&searchString=@searchString">@nextPage</a></li>
+                                }
+                                if (pageCurrent != numberPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=@nextPage&searchString=@searchString" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                                for (int i = 1; i <= numberPage; i++)
+                                {
+                                    <li class="page-item"><a class="page-link" href="?page=@i&searchString=@searchString">@i</a></li>
+                                }
                             }
                         }
-                    })
-                })
-            })
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    }
+</div>
+
+@section scripts{
+    @*<script src="~/Scripts/kendo.all.min.js"></script>
+
+        <script type="text/javascript">
             $(document).ready(function () {
-                $(document).click(function () {
-                    $('#myMenu').hide();
+                var dataProduct = @Html.Raw((Model != null) ? Newtonsoft.Json.JsonConvert.SerializeObject(Model) : "[]");
+                $("#grid").kendoGrid({
+                    dataSource: dataProduct,
+                    height: 350,
+                    pageable: {
+                        pageSizes: [5, 10, 20],
+                        pageSize: 5
+                    },
+                    sortable: {
+                        mode: "single",
+                        allowUnsort: false
+                    },
+                    dataBound: onDataBound,
+                    toolbar: ["search"],
+                    search: {
+                        fields: ["Name", "Code", "CateName"]
+                    },
+                    columns: [
+                        {
+                            field: "Code",
+                            title: "Code",
+                            width: 80,
+                        }, {
+                            field: "Name",
+                            title: "Name",
+                            width: 250
+                        }, {
+                            field: "CateName",
+                            title: "Category",
+                            width: 200
+                        }, {
+                            field: "MetaTitle",
+                            title: "MetaTitle",
+                            width: 250
+                        }, {
+                            field: "Price",
+                            title: "Price",
+                            format: "{0:c}",
+                            width: 120
+                        }, {
+                            field: "Quantity",
+                            title: "Quantity",
+                            width: 90
+                        }]
                 });
             });
-        </script>
-    }
+
+            function onDataBound(e) {
+                var grid = this;
+                grid.table.find("tr").each(function () {
+                    var dataID = grid.dataItem(this).ID;
+                    $(this).closest('tr').addClass("row_" + dataID + "");
+
+                    $("#myMenu").kendoContextMenu({
+                        target: ".row_" + dataID + "",
+                        animation: {
+                            open: { effects: "fadeIn" },
+                            duration: 500
+                        }
+                    });
+                    var contextMenu = $("#myMenu").data("kendoContextMenu");
+                    contextMenu.bind("open", function () {
+                        $('.detail').off('click').on('click', function (e) {
+                            e.preventDefault();
+                            $('#myMenu').hide();
+                            $.get("/Product/DetailProduct", { id: dataID }, function (res) {
+                                $("#myModalBody").html(res);
+                                $("#myModal").modal('show');
+                            })
+                        })
+                        $('.edit').off('click').on('click', function (e) {
+                            e.preventDefault();
+                            $('#myMenu').hide();
+                            $.get("/Product/EditProduct", { id: dataID }, function (res) {
+                                $("#myModalBody").html(res);
+                                $("#myModal").modal('show');
+                            })
+                        })
+                        $('.delete').off('click').on('click', function (e) {
+                            e.preventDefault();
+                            $('#myMenu').hide();
+                            $.ajax({
+                                url: "/Product/DeleteProduct",
+                                data: { id: dataID },
+                                dataType: 'json',
+                                type: 'POST',
+                                success: function (res) {
+                                    if (res.status == true) {
+                                        $(".row_" + dataID + "").remove();
+                                        alert("Delete Success...");
+                                    } else {
+                                        alert("Delete Error...");
+                                    }
+                                }
+                            })
+                        })
+                    });
+                });
+            }
+        </script>*@
 
     <script type="text/javascript">
         function updateProduct(id) {
@@ -221,6 +282,30 @@
             if (msg)
                 openSuccessModal(msg);
         });
+    </script>
+
+    <script type="text/javascript">
+
+        $("#checkAll").click(function () {
+            $("input[type=checkbox]").prop('checked', $(this).prop('checked'));
+        });
+
+        $("input[name='productDelete']").click(function () {
+            if (!$(this).prop("checked")) {
+                $("#checkAll").prop("checked", false);
+            }
+        });
+
+        $("input[name='productDelete']").click(function () {
+            if ($("input[name='productDelete']").length == $("input[name='productDelete']:checked").length) {
+                $("#checkAll").prop("checked", "checked");
+            }
+            else {
+                $("#checkAll").removeProp("checked");
+            }
+        });
+
+
     </script>
 }
 

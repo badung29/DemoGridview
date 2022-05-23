@@ -1,0 +1,76 @@
+﻿@model List<Model.ViewModel.PieChartCategory>
+
+@{
+    ViewBag.Title = "Product";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}﻿
+
+<div id="pieChart"></div>
+<div id="columnChart"></div>
+@section scripts{
+    <script src="~/Scripts/kendo.all.min.js"></script>
+
+    <script>
+        function createChart() {
+            var dataChart = @Html.Raw((Model != null) ? Newtonsoft.Json.JsonConvert.SerializeObject(Model) : "[]");
+            $("#pieChart").kendoChart({
+                dataSource: { data: dataChart },
+                title: {
+                    position: "bottom",
+                    text: "Product Category"
+                },
+                seriesDefaults: {
+                    labels: {
+                        visible: true,
+                        background: "transparent",
+                        template: "#= category #: \n #= value#%"
+                    }
+                },
+                series: [{
+                    type: "pie",
+                    field: "Value",
+                    categoryField: "Name",
+                    autoFit: true,
+                    labels: {
+                        color: "#000",
+                        position: "outsideEnd",
+                        template: "#: category #",
+                        visible: true
+                    }
+                }],
+                legend: {
+                    position: "bottom"
+                },
+                tooltip: {
+                    visible: true,
+                    format: "{0}"
+                }
+            });
+
+            $("#columnChart").kendoChart({
+                dataSource: { data: dataChart },
+                series: [{
+                    type: "column",
+                    aggregate: "avg",
+                    field: "Value",
+                    categoryField: "Name"
+                }],
+                categoryAxis: {
+                    baseUnit: "weeks",
+                    majorGridLines: {
+                        visible: false
+                    }
+                },
+                valueAxis: {
+                    line: {
+                        visible: false
+                    }
+                }
+            });
+        }
+
+        $(document).ready(createChart);
+    </script>
+}
+
+

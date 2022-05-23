@@ -1,0 +1,937 @@
+﻿html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%
+}
+
+body, .k-window-content {
+    background: #fff;
+    font-family: Roboto,Helvetica,Arial,sans-serif;
+    color: #333;
+    cursor: default
+}
+
+#application {
+    height: 100%;
+    min-width: 920px
+}
+
+h1, h2 {
+    font-family: Roboto,Helvetica,Arial,sans-serif;
+    font-weight: 400
+}
+
+header {
+    background-color: #2a2d33;
+    color: #fff
+}
+
+.section-head {
+    font-size: 14px;
+    font-weight: 500
+}
+
+.k-loading {
+    background-image: url(../images/loading.gif)
+}
+
+.section-head .k-loading {
+    margin-top: 10px;
+    margin-left: 11px
+}
+
+.k-header {
+    color: #2a2d33;
+    background-color: #f5f7f8;
+    border-color: #dce4e5
+}
+
+.k-window {
+    border-color: transparent;
+    box-shadow: 0 10px 20px rgba(0,0,0,.2)
+}
+
+#options-window {
+    line-height: 2em;
+    padding: 2em
+}
+
+.k-listview {
+    font-size: 13px
+}
+
+    .k-listview .snippet-hash {
+        padding-left: 20px
+    }
+
+.k-checkbox:checked + .k-checkbox-label:after, .k-checkbox-label:after {
+    font-weight: 700;
+    line-height: 1.1;
+    top: 2px;
+    border-color: #bbb;
+    color: #333
+}
+
+.k-checkbox-label:before {
+    top: 2px;
+    box-shadow: inset 0 0 2px rgba(0,0,0,.2)
+}
+
+.k-checkbox-label {
+    color: #787878
+}
+
+.k-checkbox:checked + .k-checkbox-label {
+    color: #333
+}
+
+.k-popup {
+    background-color: #fff;
+    color: #555;
+    border: 0;
+    box-shadow: 0 0 6px 1px rgba(0,0,0,.2)
+}
+
+    .k-popup.k-list-container, .k-popup.k-calendar-container {
+        border: 0;
+        padding: 0
+    }
+
+    .k-popup .k-button {
+        font-size: 14px
+    }
+
+.k-textbox {
+    border-color: #dbe3e4;
+    border-radius: 3px;
+    border-width: 2px
+}
+
+    .k-textbox:focus, .k-textbox:active {
+        border-color: #c2e0f4
+    }
+
+.k-dropdown-wrap, .k-button {
+    font-weight: 500;
+    border-radius: 0;
+    outline: 0;
+    background-color: transparent;
+    border: 0;
+    color: #2a2d33
+}
+
+.accountDetails .k-button {
+    border: 1px solid #e2e4e7
+}
+
+.k-header .k-dropdown {
+    border-right: 1px solid #dce4e5;
+    width: 200px;
+    margin-left: 3px
+}
+
+.k-header .k-dropdown, .k-header .k-dropdown-wrap, .k-header .k-dropdown-wrap .k-input, .k-header .k-dropdown-wrap .k-select {
+    height: 36px;
+    line-height: 36px
+}
+
+    .k-header .k-dropdown-wrap .k-input {
+        padding-top: 0;
+        padding-bottom: 0;
+        padding-left: .5em
+    }
+
+    .k-header .k-dropdown-wrap .k-select {
+        width: 36px
+    }
+
+#results .section-head .k-dropdown {
+    padding: 0
+}
+
+.k-button {
+    padding: .1em 18px .15em
+}
+
+    .k-state-hover, .k-button:hover, .k-button:focus {
+        background-color: #e2e4e7;
+        border-color: transparent
+    }
+
+    .k-state-selected, .k-button:active {
+        background-color: #e2e4e7;
+        border-color: transparent
+    }
+
+ul[data-role=menu] li.fs-button.k-state-disabled, .section-head.k-header a.fs-button.k-state-disabled {
+    pointer-events: auto;
+    cursor: not-allowed !important
+}
+
+.k-window-titlebar .k-window-actions {
+    top: 7px
+}
+
+.k-window-titlebar.k-header {
+    padding-right: 40px
+}
+
+.k-destructive {
+    background-color: #d32f2f;
+    color: #fff
+}
+
+    .k-destructive:hover, .k-destructive:focus {
+        background-color: #c62828
+    }
+
+    .k-destructive:active {
+        background-color: #b71c1c
+    }
+
+.k-primary {
+    background-color: #1976d2;
+    color: #fff
+}
+
+    .k-primary:hover, .k-primary:focus, .k-primary:active {
+        background-color: #1565c0
+    }
+
+.k-pager-wrap {
+    line-height: 20px;
+    padding: 10px 0 11px;
+    margin-right: .6em;
+    border: 0;
+    float: right
+}
+
+    .k-pager-wrap .k-state-disabled {
+        opacity: .4;
+        background-color: transparent
+    }
+
+    .k-pager-wrap .k-link, .k-pager-wrap .k-state-selected {
+        display: inline-block;
+        width: 20px;
+        color: #2d3e50;
+        text-align: center;
+        border-radius: 3px
+    }
+
+.k-pager-numbers, .k-pager-numbers > li {
+    display: inline-block
+}
+
+.k-splitter .k-splitbar {
+    width: 1px;
+    border-width: 0;
+    z-index: 100;
+    background-color: #dce4e5
+}
+
+.k-ghost-splitbar {
+    background-color: #eaeced;
+    border-color: transparent
+}
+
+.k-splitter .k-splitbar .k-resize-handle {
+    top: 0;
+    background-color: rgba(255,255,255,.001);
+    background-image: none;
+    margin: 0 0 0 -2px;
+    left: 0;
+    width: 5px;
+    height: 100%
+}
+
+.shortcut {
+    display: inline-block;
+    float: right;
+    opacity: .5
+}
+
+.k-menu {
+    border: 0;
+    background-color: #2a2d33;
+    color: #fff;
+    font-size: 13px;
+    padding-bottom: 5px
+}
+
+    .k-menu > .k-first {
+        margin-left: 5px
+    }
+
+    .k-menu .k-menu-group {
+        border: 0
+    }
+
+    .k-menu .k-animation-container, .k-popup .k-animation-container {
+        margin-top: 0
+    }
+
+    .k-menu .k-item {
+        border-color: transparent transparent #dce4e5
+    }
+
+.k-widget.k-menu-horizontal > .k-item {
+    float: none;
+    display: inline-block
+}
+
+.k-menu > .k-item.k-state-hover, .k-menu > .k-item.k-state-border-down {
+    background-color: #55575c;
+    border-radius: 3px
+}
+
+.k-menu > .k-item > .k-link {
+    font-weight: 400
+}
+
+.k-menu .k-item .k-item {
+    font-size: 13px
+}
+
+    .k-menu .k-item .k-item .k-link {
+        line-height: 2em
+    }
+
+.k-menu .k-i-arrow-s, .k-link:not(.k-state-disabled):hover > .k-i-arrow-s, .k-menu .k-state-hover .k-i-arrow-s {
+    background-image: url(../images/arrow-s.png);
+    background-position: 0 0
+}
+
+#snippetActions .k-item {
+    width: 300px
+}
+
+.searchbox {
+    padding: 2em 18px
+}
+
+    .searchbox .k-button {
+        width: 100px;
+        float: right
+    }
+
+    .searchbox .k-textbox {
+        display: block;
+        width: calc(100% - 110px)
+    }
+
+        .searchbox .k-textbox + .k-button {
+            position: absolute;
+            top: 37px;
+            right: 135px;
+            width: auto;
+            padding: 5px;
+            font-size: 12px;
+            line-height: 12px
+        }
+
+header h1 {
+    text-indent: -9999em;
+    overflow: hidden;
+    line-height: 40px;
+    margin: 0;
+    padding: 0;
+    background-image: url(../images/logo.png);
+    background-repeat: no-repeat;
+    background-position: 16px 15px
+}
+
+footer {
+    font-size: 11px;
+    line-height: 20px;
+    padding: 6px 10px;
+    border-width: 1px 0 0;
+    border-style: solid;
+    text-align: center
+}
+
+    footer a {
+        color: #1976d2;
+        text-decoration: none
+    }
+
+        footer a:hover {
+            text-decoration: underline
+        }
+
+#main-section {
+    height: calc(100% - 108px);
+    border-width: 0;
+    overflow: hidden;
+    background-color: #f5f7f8
+}
+
+#results > div {
+    height: 100%;
+    overflow: hidden
+}
+
+.fs-button {
+    float: right
+}
+
+section h2 {
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 500;
+    display: inline-block;
+    margin: 0;
+    border: 0;
+    letter-spacing: -.04em;
+    line-height: 36px;
+    padding-left: 19px;
+    vertical-align: middle
+}
+
+.library-picker {
+    margin-left: -19px
+}
+
+section div.k-header {
+    border-bottom-style: solid;
+    border-width: 0 0 1px;
+    height: 36px
+}
+
+    section div.k-header:after {
+        content: " ";
+        display: block;
+        clear: both;
+        height: 0;
+        line-height: 0
+    }
+
+.k-header .k-primary, .k-header .k-textbox {
+    float: right;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    height: 36px;
+    line-height: 18px
+}
+
+#results .k-dropdown, #results .fs-button {
+    float: right;
+    margin: 0;
+    width: auto;
+    padding: 0 18px;
+    vertical-align: middle;
+    height: 36px;
+    line-height: 36px;
+    border-left: 1px solid #dce4e5
+}
+
+.dojo-status {
+    height: 28px;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 28px;
+    text-indent: 19px;
+    border-top: 1px solid #dce4e5;
+    background-color: #f5f7f8
+}
+
+.dojo-retry {
+    height: 22px;
+    line-height: 16px;
+    margin: 0 0 0 5px;
+    padding: 0 5px;
+    vertical-align: baseline
+}
+
+.dojo-validation-error {
+    position: absolute;
+    top: 37px;
+    z-index: 1;
+    background: #f99;
+    width: 100%;
+    text-align: center;
+    padding: 5px 0
+}
+
+.dojo-resultsview {
+    background-repeat: no-repeat;
+    background-position: 50% 68px
+}
+
+#snippet-list .k-content, .dojo-resultsview {
+    width: 100%;
+    overflow: auto;
+    height: calc(100% - 37px)
+}
+
+.k-listview {
+    border-width: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse
+}
+
+    .k-listview td {
+        padding: .5em 1em;
+        border-bottom: 1px solid #dbe3e4;
+        cursor: pointer
+    }
+
+    .k-listview .k-state-selected td {
+        cursor: default
+    }
+
+    .k-listview tr:hover {
+        background-color: #f5f7f8
+    }
+
+    .k-listview tr.k-state-selected {
+        border-color: #c2e0f4;
+        background-color: #ebf5fb;
+        color: #3497da
+    }
+
+.snippet-title {
+    font-weight: 700
+}
+
+.snippet-date {
+    text-align: right
+}
+
+.dojo-context-menu .snippet-date {
+    font-size: 0
+}
+
+.snippet-options {
+    padding-left: 5px;
+    padding-right: 5px
+}
+
+.snippet-actions {
+    text-align: right;
+    padding: 0;
+    width: 135px
+}
+
+.snippet-actions-list {
+    display: none;
+    position: absolute;
+    right: 83px;
+    padding-left: 15px
+}
+
+.dialog-actions {
+    text-align: right;
+    padding-top: .5em;
+    margin-top: 2.5em;
+    border-top: 1px solid #ccc
+}
+
+    .dialog-actions .k-button {
+        margin-left: .5em
+    }
+
+.k-expand-prev, .k-collapse-prev {
+    display: none
+}
+
+#code-mirror {
+    width: 100%;
+    height: calc(100% - 82px)
+}
+
+.cmDiv {
+    height: 100%
+}
+
+.k-content {
+    position: relative
+}
+
+.dojo-overlay {
+    background: #fff url(../images/loading-big.gif) no-repeat 50% 50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%
+}
+
+#snippet-list .dojo-overlay {
+    top: 145px;
+    height: calc(100% - 145px)
+}
+
+#not-found {
+    background: #fff;
+    text-align: center;
+    z-index: 10
+}
+
+    #not-found h2 {
+        margin-top: 235px
+    }
+
+.dojo-tutorial.k-loading {
+    background-color: #fff
+}
+
+.dojo-tutorial {
+    height: 400px;
+    font-size: 14px;
+    position: relative;
+    overflow: hidden;
+    font-weight: 400;
+    padding: 0;
+    background-color: #dce4e5
+}
+
+.dojo-tutorial-current, .dojo-tutorial-next {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #fff
+}
+
+.dojo-tutorial-next {
+    overflow: hidden;
+    padding: 0
+}
+
+.dojo-tutorial-current {
+    overflow: auto
+}
+
+.dojo-tutorial p {
+    padding: 0 2em;
+    text-indent: 0
+}
+
+    .dojo-tutorial p:first-child {
+        margin-top: 1.5em
+    }
+
+.dojo-tutorial-complete {
+    text-align: center;
+    background-color: #f5f7f8
+}
+
+    .dojo-tutorial-complete p:first-child {
+        margin-top: 3.5em
+    }
+
+    .dojo-tutorial-complete .k-button {
+        margin-top: 2em
+    }
+
+.tutorial-mode #code-mirror {
+    height: calc(100% - 443px)
+}
+
+.tutorial-mode .dojo-when-editing, .listing-mode .dojo-when-editing {
+    display: none !important
+}
+
+.listing-mode .CodeMirror-lines {
+    cursor: default
+}
+
+.listing-mode .CodeMirror-focused div.CodeMirror-cursor {
+    visibility: hidden
+}
+
+.dojo-results-wrap {
+    width: 100%;
+    height: 100%;
+    vertical-align: top;
+    margin: 0
+}
+
+.dojo-results {
+    border-width: 0;
+    vertical-align: middle;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    margin: 0
+}
+
+.dojo-simulator {
+    width: 100%;
+    height: 100%;
+    vertical-align: top;
+    margin: 0;
+    border-width: 0
+}
+
+.dojo-empty-result {
+    display: block;
+    vertical-align: middle;
+    text-align: center;
+    position: absolute;
+    background: url(../images/kendoka.png) no-repeat 50% 0;
+    top: 50%;
+    left: 50%;
+    height: 80px;
+    width: 300px;
+    padding-top: 210px;
+    margin-left: -150px;
+    margin-top: -140px;
+    font-size: 14px;
+    color: #9c9c9c
+}
+
+    .dojo-empty-result strong {
+        display: block;
+        font-size: 40px;
+        font-weight: 300;
+        color: #2a2d33;
+        letter-spacing: -.04em
+    }
+
+.dojo-accountview {
+    position: absolute;
+    top: 10px;
+    right: 15px
+}
+
+    .dojo-accountview .k-button {
+        vertical-align: top;
+        color: #fff;
+        background: 0 0;
+        box-shadow: none;
+        border: 0;
+        font-size: 12px;
+        line-height: 24px;
+        font-weight: 400;
+        padding-left: 5px;
+        padding-right: 5px;
+        margin-left: 10px
+    }
+
+        .dojo-accountview .k-button.k-state-border-down, .dojo-accountview .k-button:hover, .dojo-accountview .k-button:focus {
+            color: #969fa8
+        }
+
+    .dojo-accountview .dojo-gravatar {
+        width: 24px;
+        height: 24px;
+        display: inline-block;
+        vertical-align: bottom;
+        margin-right: 7px;
+        border-radius: 50%
+    }
+
+.cmDiv > .CodeMirror {
+    height: 100%
+}
+
+.dojo-accountview button {
+    margin-left: .5em
+}
+
+.k-popup.register, .k-popup.login, .k-popup.passwordReset, .k-popup.accountDetails {
+    width: 300px;
+    padding: .5em 1em 1.5em;
+    border-radius: 3px 0 3px 3px
+}
+
+.accountDetails button {
+    width: 100%
+}
+
+.error, .k-popup .error {
+    color: #f44
+}
+
+.k-popup .error {
+    clear: both
+}
+
+.k-popup label {
+    display: block;
+    margin: .5em 0
+}
+
+.k-popup .k-textbox {
+    width: 100%;
+    display: block;
+    margin-top: .2em;
+    box-sizing: border-box
+}
+
+.k-popup .k-button {
+    margin: 1em 0 0
+}
+
+.k-popup a.k-button {
+    display: block
+}
+
+.k-popup button .k-loading {
+    display: none
+}
+
+form.loading:after {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%
+}
+
+form.loading button .k-loading {
+    display: inline-block;
+    margin-right: 4px
+}
+
+.browsehappy {
+    margin: .2em 0;
+    background: #ccc;
+    color: #000;
+    padding: .2em 0
+}
+
+.CodeMirror-matchingtag {
+    background: rgba(255,150,0,.3)
+}
+
+.cm-matchhighlight {
+    background: rgba(225,86,19,.15)
+}
+
+#application .CodeMirror-matchingbracket {
+    background: rgba(225,86,19,.15);
+    color: #000
+}
+
+.k-ghost-splitbar {
+    z-index: 10
+}
+
+.CodeMirror {
+    font-family: Consolas,Menlo,monospace;
+    font-size: 14px
+}
+
+.k-notification-error.k-group {
+    background: rgba(100%,0,0,1);
+    color: #fff
+}
+
+.wrong-pass {
+    width: 300px;
+    height: 120px
+}
+
+    .wrong-pass h3 {
+        margin-bottom: 0;
+        font-size: 1em;
+        padding: 32px 10px 5px
+    }
+
+    .wrong-pass img {
+        float: left;
+        margin: 30px 15px 30px 30px
+    }
+
+    .wrong-pass p {
+        margin-top: 0
+    }
+
+.cm-s-default span.cm-keyword {
+    color: #3367af
+}
+
+.cm-s-default span.cm-atom {
+    color: #823125
+}
+
+.cm-s-default span.cm-number {
+    color: #3367af
+}
+
+.cm-s-default span.cm-def {
+    color: #494949
+}
+
+.cm-s-default span.cm-variable {
+    color: #cf5a1f
+}
+
+.cm-s-default span.cm-variable-2 {
+    color: #3367af
+}
+
+.cm-s-default span.cm-variable-3 {
+    color: #3367af
+}
+
+.cm-s-default span.cm-property {
+    color: #9B5F9B
+}
+
+.cm-s-default span.cm-operator {
+    color: #000
+}
+
+.cm-s-default span.cm-comment {
+    color: #3b6e0b
+}
+
+.cm-s-default span.cm-string {
+    color: #3367af
+}
+
+.cm-s-default span.cm-string-2 {
+    color: #3367af
+}
+
+.cm-s-default span.cm-meta {
+    color: #474747
+}
+
+.cm-s-default span.cm-error {
+    color: red
+}
+
+.cm-s-default span.cm-qualifier {
+    color: #555
+}
+
+.cm-s-default span.cm-builtin {
+    color: #30a
+}
+
+.cm-s-default span.cm-bracket {
+    color: #cc7
+}
+
+.cm-s-default span.cm-tag {
+    color: #911e0d
+}
+
+.cm-s-default span.cm-attribute {
+    color: #cf5a1f
+}
+
+.cm-s-default span.cm-header {
+    color: #a0a
+}
+
+.cm-s-default span.cm-quote {
+    color: #090
+}
+
+.cm-s-default span.cm-hr {
+    color: #999
+}
+
+.cm-s-default span.cm-link {
+    color: #00c
+}
