@@ -12,10 +12,16 @@ namespace DemoGridview.Controllers
     public class ProductController : Controller
     {
         // GET: Product
-        public ActionResult Index()
+        public ActionResult Index(string searchString, int page = 1, int pageSize = 5)
         {
             var dao = new ProductDao();
-            var model = dao.ListAllPaging();
+            //var model = dao.ListAllPaging();
+            int totalProduct = dao.CountProduct(searchString);
+            float numberPage = (float)totalProduct / pageSize;
+            var model = dao.GetAllProducts(searchString, page, pageSize);
+            ViewBag.pageCurrent = page;
+            ViewBag.numberPage = (int)Math.Ceiling(numberPage);
+            ViewBag.SearchString = searchString;
             return View(model);
         }
 
@@ -30,7 +36,8 @@ namespace DemoGridview.Controllers
         [HttpGet]
         public ActionResult DetailProduct(int id)
         {
-            var product = new ProductDao().ViewDetail(id);
+            //var product = new ProductDao().ViewDetail(id);
+            var product = new ProductDao().GetProductByID(id).FirstOrDefault();
             ProductViewModel cate = new ProductViewModel();
             cate.ID = product.ID;
             cate.CategoryID = product.CategoryID;
@@ -48,7 +55,8 @@ namespace DemoGridview.Controllers
         [HttpGet]
         public ActionResult EditProduct(int id)
         {
-            var product = new ProductDao().ViewDetail(id);
+            //var product = new ProductDao().ViewDetail(id);
+            var product = new ProductDao().GetProductByID(id).FirstOrDefault();
             ProductViewModel cate = new ProductViewModel();
             cate.ID = product.ID;
             cate.CategoryID = product.CategoryID;
