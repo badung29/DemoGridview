@@ -1,47 +1,48 @@
 ﻿@model Model.ViewModel.ProductViewModel
 
 <div class="modal-header">
-    <span>DETAIL</span>
+    <span>ADD NEW PRODUCT</span>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
 </div>
 <div class="modal-body">
-    @using (Html.BeginForm("EditProduct", "Product", FormMethod.Post, new { @id = "myForm", @name = "productForm"}))
+    @using (Html.BeginForm("CreateProduct", "Product", FormMethod.Post, new { @id = "myForm", @name = "productForm" }))
     {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(false, "", new { @class = "text-danger" });
 
         <div class="form-group">
             @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-4" })
-            @Html.TextBoxFor(model => model.Code, new { htmlAttributes = new { @class = "form-control col-md-8" }, @disabled = "disabled" })
+            @Html.TextBoxFor(model => model.Code, new { htmlAttributes = new { @class = "form-control col-md-8" } })
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-4" })
-            @Html.TextBoxFor(model => model.Name, new { htmlAttributes = new { @class = "form-control col-md-8" }, @disabled = "disabled" })
+            @Html.TextBoxFor(model => model.Name, new { htmlAttributes = new { @class = "form-control col-md-8" } })
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.CategoryID, htmlAttributes: new { @class = "control-label col-md-4" })
-            @Html.DropDownListFor(model => model.CategoryID, new SelectList(Model.CateCollection, "ID", "Name"), "--Select--", new { htmlAttributes = new { @class = "form-control col-md-8" }, @disabled = "disabled" })
+            @Html.DropDownListFor(model => model.CategoryID, new SelectList(Model.CateCollection, "ID", "Name"), "--Select--", new { htmlAttributes = new { @class = "form-control col-md-8" } })
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.MetaTitle, htmlAttributes: new { @class = "control-label col-md-4" })
-            @Html.TextBoxFor(model => model.MetaTitle, new { htmlAttributes = new { @class = "form-control col-md-8" }, @disabled = "disabled" })
+            @Html.TextBoxFor(model => model.MetaTitle, new { htmlAttributes = new { @class = "form-control col-md-8" } })
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-4" })
-            @Html.TextBoxFor(model => model.Price, new { htmlAttributes = new { @class = "form-control col-md-8" }, @disabled = "disabled" })
+            @Html.TextBoxFor(model => model.Price, new { htmlAttributes = new { @class = "form-control col-md-8" } })
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-4" })
-            @Html.TextBoxFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control col-md-8" }, @disabled = "disabled"})
+            @Html.TextBoxFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control col-md-8" } })
         </div>
 
         <div class="modal-footer">
             &nbsp;
+            <button type="button" onclick="createProduct()" class="btn btn-primary">Create</button>
             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
         </div>
     }

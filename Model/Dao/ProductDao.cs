@@ -19,7 +19,29 @@ namespace Model.Dao
         {
             db = new OnlineShopDbContext();
         }
+        public long Insert(Product entity)
+        {
+            //db.Products.Add(entity);
+            //db.SaveChanges();
+            //return entity.ID;
+            long i = 0;
+            using (SqlConnection connection = new SqlConnection(conString))
+            {
+                SqlCommand command = new SqlCommand("Sp_InsertProducts", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Name", entity.Name);
+                command.Parameters.AddWithValue("@Code", entity.Code);
+                command.Parameters.AddWithValue("@MetaTitle", entity.MetaTitle);
+                command.Parameters.AddWithValue("@CategoryID", entity.CategoryID);
+                command.Parameters.AddWithValue("@Price", entity.Price);
+                command.Parameters.AddWithValue("@Quantity", entity.Quantity);
 
+                connection.Open();
+                i = command.ExecuteNonQuery();
+                connection.Close();
+            }
+               return i;         
+        }
         public bool Update(Product entity)
         {
             //try
@@ -243,6 +265,13 @@ namespace Model.Dao
         //{
         //    return db.Products.Find(id);
         //}
-
+        public bool CheckProductName(string Name)
+        {
+            return db.Products.Count(x => x.Name == Name) > 0;
+        }
+        public bool CheckProductCode(string Code)
+        {
+            return db.Products.Count(x => x.Code == Code) > 0;
+        }
     }
 }

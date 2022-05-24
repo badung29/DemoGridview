@@ -12,11 +12,11 @@
         </div>
     </div>
 </div>
-<div class="card shadow mb-4">
-    <div class="card-body" style="padding:30px;">
-        <div id="grid" class="target"></div>
-    </div>
-</div>
+@*<div class="card shadow mb-4">
+        <div class="card-body" style="padding:30px;">
+            <div id="grid" class="target"></div>
+        </div>
+    </div>*@
 <div id="myMenu">
     <ul class="menu-items">
         <li class="detail">Detail</li>
@@ -58,7 +58,7 @@
     }
 </style>
 
-<div class="card-body">
+<div class="card-body" style="padding-top: 40px;">
     @using (Html.BeginForm("Index", "Product", FormMethod.Get))
     {
         <div class="row form-group">
@@ -67,18 +67,20 @@
             </div>
             <div class="col-lg-8" style="margin-left:-180px">
                 <button type="submit" class="btn btn-success">Search</button>
+                <a class="btn btn-primary" onclick="createNewProduct()">Add New</a>
             </div>
         </div>
 
-        <div class="row form-group">
+        <div class="row form-group" style="padding-left: 15px;">
             <div class="table-responsive">
 
                 <table class="table table-bordered table-striped verticle-middle sortable ">
                     <thead>
                         <tr>
+                            <th scope="col">Code</th>
                             <th scope="col">Name</th>
                             <th scope="col">NameCategory</th>
-                            <th scope="col">Code</th>
+                            <th scope="col">Title</th>
                             <th scope="col">Price</th>
                             <th scope="col">Quantity</th>
                         </tr>
@@ -86,13 +88,14 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            <tr id="row_@item.ID">                           
-                                <td>@item.Name</td>
-                                <td>@item.CateName</td>
-                                <td>@item.Code</td>
-                                <td>@item.Price $</td>
-                                <td>@item.Quantity</td>
-                            </tr>
+                        <tr id="row_@item.ID">
+                            <td>@item.Code</td>
+                            <td>@item.Name</td>
+                            <td>@item.CateName</td>
+                            <td>@item.MetaTitle</td>
+                            <td>@item.Price $</td>
+                            <td>@item.Quantity</td>
+                        </tr>
                         }
                     </tbody>
                 </table>
@@ -254,8 +257,79 @@
                 });
             }
         </script>*@
+    @foreach (var item in Model)
+    {
+        <script type="text/javascript">
+            $('#row_@item.ID').bind("contextmenu", function (e) {
+                e.preventDefault();
+                $('#myMenu').css({
+                    top: e.pageY + 'px',
+                    left: e.pageX + 'px'
+                }).show();
+                $('.detail').off('click').on('click', function (e) {
+                    e.preventDefault();
+                    $('#myMenu').hide();
+                    $.get("/Product/DetailProduct", { id: @item.ID }, function (res) {
+                        $("#myModalBody").html(res);
+                        $("#myModal").modal('show');
+                    })
+                })
+                $('.edit').off('click').on('click', function (e) {
+                    e.preventDefault();
+                    $('#myMenu').hide();
+                    $.get("/Product/EditProduct", { id: @item.ID }, function (res) {
+                        $("#myModalBody").html(res);
+                        $("#myModal").modal('show');
+                    })
+                })
+                $('.delete').off('click').on('click', function (e) {
+                    e.preventDefault();
+                    $('#myMenu').hide();
+                    $.ajax({
+                        url: "/Product/DeleteProduct",
+                        data: { id: @item.ID },
+                        dataType: 'json',
+                        type: 'POST',
+                        success: function (res) {
+                            if (res.status == true) {
+                                $("#row_" + @item.ID).remove();
+                                alert("Delete Success...");
+                            } else {
+                                alert("Delete Error...");
+                            }
+                        }
+                    })
+                })
+            })
+            $(document).ready(function () {
+                $(document).click(function () {
+                    $('#myMenu').hide();
+                });
+            });
+        </script>
+    }
 
     <script type="text/javascript">
+        function createNewProduct() {
+            $.get("/Product/CreateNewProduct", function (res) {
+                $("#myModalBody").html(res);
+                $("#myModal").modal('show');
+            })
+        }
+
+        function createProduct() {
+            var form = $('form[name="productForm"]');
+            var data = form.serialize();
+            $.post("/Product/CreateProduct", data, function (res) {
+                if (res == true) {
+                    window.location.href = "/Product/Index";
+                } else {
+                    $("#myModalBody").html(res);
+                    $("#myModal").modal('show');
+                }
+            })
+        }
+
         function updateProduct(id) {
             var form = $('form[name="productForm"]');
             var newForm = form.add('<input name="ID" value="' + id + '" /> ');
@@ -284,29 +358,6 @@
         });
     </script>
 
-    <script type="text/javascript">
-
-        $("#checkAll").click(function () {
-            $("input[type=checkbox]").prop('checked', $(this).prop('checked'));
-        });
-
-        $("input[name='productDelete']").click(function () {
-            if (!$(this).prop("checked")) {
-                $("#checkAll").prop("checked", false);
-            }
-        });
-
-        $("input[name='productDelete']").click(function () {
-            if ($("input[name='productDelete']").length == $("input[name='productDelete']:checked").length) {
-                $("#checkAll").prop("checked", "checked");
-            }
-            else {
-                $("#checkAll").removeProp("checked");
-            }
-        });
-
-
-    </script>
 }
 
 

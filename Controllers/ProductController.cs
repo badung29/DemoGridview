@@ -34,6 +34,64 @@ namespace DemoGridview.Controllers
         //}
 
         [HttpGet]
+        public ActionResult CreateNewProduct()
+        {
+            ProductViewModel cate = new ProductViewModel();
+            var dao = new CategoryDao();
+            cate.CateCollection = dao.ListAll();
+            return PartialView("CreateProduct", cate);
+        }
+
+        [HttpPost]
+        public ActionResult CreateProduct(ProductViewModel data)
+        {
+            var Catedao = new CategoryDao();
+            data.CateCollection = Catedao.ListAll();
+            if (ModelState.IsValid)
+            {
+                var dao = new ProductDao();
+                if (dao.CheckProductName(data.Name))
+                {
+                    ModelState.AddModelError("", "Duplicate product name!");
+                }
+                else if (dao.CheckProductCode(data.Code))
+                {
+                    ModelState.AddModelError("", "Duplicate product code!");
+                }
+                else if (data.Price == 0)
+                {
+                    ModelState.AddModelError("", "Please enter the price!");
+                }
+                else if (data.Quantity == 0)
+                {
+                    ModelState.AddModelError("", "Please enter the quantity!");
+                }
+                else
+                {
+                    var product = new Product();
+                    product.Name = data.Name;
+                    product.Code = data.Code;
+                    product.MetaTitle = data.MetaTitle;
+                    product.Price = data.Price;
+                    product.Quantity = data.Quantity;
+                    product.CategoryID = data.CategoryID;
+                    long id = dao.Insert(product);
+                    if (id > 0)
+                    {
+                        TempData["SuccessMessage"] = "Product " + product.Name + " Created Successfully!";
+                        return Json(true, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        TempData["SuccessMessage"] = "Product " + product.Name + " Created Failed!";
+                        return Json(true, JsonRequestBehavior.AllowGet);
+                    }
+                }
+            }
+            return PartialView("CreateProduct", data);
+        }
+
+        [HttpGet]
         public ActionResult DetailProduct(int id)
         {
             //var product = new ProductDao().ViewDetail(id);
@@ -43,7 +101,6 @@ namespace DemoGridview.Controllers
             cate.CategoryID = product.CategoryID;
             cate.Name = product.Name;
             cate.Code = product.Code;
-            cate.Description = product.Description;
             cate.MetaTitle = product.MetaTitle;
             cate.Price = (decimal)product.Price;
             cate.Quantity = product.Quantity;
@@ -62,7 +119,6 @@ namespace DemoGridview.Controllers
             cate.CategoryID = product.CategoryID;
             cate.Name = product.Name;
             cate.Code = product.Code;
-            cate.Description = product.Description;
             cate.MetaTitle = product.MetaTitle;
             cate.Price = (decimal)product.Price;
             cate.Quantity = product.Quantity;
@@ -92,7 +148,6 @@ namespace DemoGridview.Controllers
                     product.ID = data.ID;
                     product.Name = data.Name;
                     product.Code = data.Code;
-                    product.Description = data.Description;
                     product.MetaTitle = data.MetaTitle;
                     product.Price = data.Price;
                     product.Quantity = data.Quantity;

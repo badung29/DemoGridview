@@ -24,11 +24,11 @@ namespace Model.ViewModel
         [StringLength(10)]
         public string Code { get; set; }
 
+        [Required(ErrorMessage = "MetaTitle is requied")]
         [Display(Name = "MetaTitle")]
         [StringLength(250)]
         public string MetaTitle { get; set; }
 
-        [Required(ErrorMessage = "Description is requied")]
         [StringLength(500)]
         public string Description { get; set; }
         public string Image { get; set; }
