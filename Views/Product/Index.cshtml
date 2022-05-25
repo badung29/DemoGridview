@@ -74,7 +74,7 @@
         <div class="row form-group" style="padding-left: 15px;">
             <div class="table-responsive">
 
-                <table class="table table-bordered table-striped verticle-middle sortable ">
+                <table id="myTable" class="table table-bordered table-hover">
                     <thead>
                         <tr>
                             <th scope="col">Code</th>
@@ -358,6 +358,12 @@
         });
     </script>
 
+    <script type="text/javascript">
+        $('#myTable').DataTable({
+            paging: false,
+            searching: false      
+        });
+    </script>
 }
 
 
