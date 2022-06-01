@@ -1,0 +1,92 @@
+﻿@{
+    ViewBag.Title = "Product";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="scheduler"></div>
+@section scripts{
+    <script>
+        $("#scheduler").kendoScheduler({
+            height: 600,
+            editable: {
+                confirmation: true
+            },
+            selectable: false,
+            views: ["day", "week"],
+            dataSource: {
+                type: "aspnetmvc-ajax",
+                transport: {
+                    stringifyDates: true,
+                    read: {
+                        url: "/Scheduler/EventSchedulers_Read"
+                    },
+                    create: {
+                        url: "/Scheduler/EventSchedulers_Create"
+                    },
+                    update: {
+                        url: "/Scheduler/EventSchedulers_Update"
+                    },
+                    destroy: {
+                        url: "/Scheduler/EventSchedulers_Destroy"
+                    }
+                },
+                schema: {
+                    data: "Data",
+                    model: {
+                        id: "iD",
+                        fields: {
+                            "iD": {
+                                type: "number",
+                                from: "ID"
+                            },
+                            "description": {
+                                type: "string",
+                                from: "Description"
+                            },
+                            "start": {
+                                type: "date",
+                                from: "Start"
+                            },
+                            "end": {
+                                type: "date",
+                                from: "End"
+                            },
+                            "isAllDay": {
+                                type: "boolean",
+                                from: "IsAllDay"
+                            },
+                            "title": {
+                                type: "string",
+                                from: "Title"
+                            },
+                            "startTimezone": {
+                                type: "string",
+                                from: "StartTimezone"
+                            },
+                            "endTimezone": {
+                                type: "string",
+                                from: "EndTimezone"
+                            },
+                            "recurrenceID": {
+                                type: "number",
+                                from: "RecurrenceID"
+                            },
+                            "recurrenceRule": {
+                                type: "string",
+                                from: "RecurrenceRule"
+                            },
+                            "recurrenceException": {
+                                type: "string",
+                                from: "RecurrenceException"
+                            },
+                            "themColor": {
+                                type: "string",
+                                from: "ThemColor"
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
+}

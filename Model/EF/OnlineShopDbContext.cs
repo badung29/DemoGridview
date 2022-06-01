@@ -19,6 +19,7 @@ namespace Model.EF
         public virtual DbSet<Content> Contents { get; set; }
         public virtual DbSet<ContentTag> ContentTags { get; set; }
         public virtual DbSet<Credential> Credentials { get; set; }
+        public virtual DbSet<EventScheduler> EventSchedulers { get; set; }
         public virtual DbSet<Feedback> Feedbacks { get; set; }
         public virtual DbSet<Footer> Footers { get; set; }
         public virtual DbSet<Language> Languages { get; set; }
