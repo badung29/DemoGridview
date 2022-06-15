@@ -134,7 +134,16 @@ namespace DemoGridview.Controllers
             data.CateCollection = Catedao.ListAll();
             if (ModelState.IsValid)
             {
-                if (data.Price == 0)
+                var dao = new ProductDao();
+                if (dao.CheckProductName(data.Name))
+                {
+                    ModelState.AddModelError("", "Duplicate product name!");
+                }
+                else if (dao.CheckProductCode(data.Code))
+                {
+                    ModelState.AddModelError("", "Duplicate product code!");
+                }
+                else if (data.Price == 0)
                 {
                     ModelState.AddModelError("", "Please enter the price!");
                 }
@@ -152,8 +161,8 @@ namespace DemoGridview.Controllers
                     product.Price = data.Price;
                     product.Quantity = data.Quantity;
                     product.CategoryID = data.CategoryID;
-                    var dao = new ProductDao();
-                    var result = dao.Update(product);
+                    var daoProduct = new ProductDao();
+                    var result = daoProduct.Update(product);
                     if (result)
                     {
                         TempData["SuccessMessage"] = "Product " + product.Name + " Saved Successfully";

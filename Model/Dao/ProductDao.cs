@@ -265,13 +265,13 @@ namespace Model.Dao
         //{
         //    return db.Products.Find(id);
         //}
-        public bool CheckProductName(string Name)
+        public bool CheckProductName(string data)
         {
-            return db.Products.Count(x => x.Name == Name) > 0;
+            return db.Products.Where(x=>x.Name != null).Select(x=>x.Name.ToLower()).Contains(data.ToLower());
         }
-        public bool CheckProductCode(string Code)
+        public bool CheckProductCode(string data)
         {
-            return db.Products.Count(x => x.Code == Code) > 0;
+            return db.Products.Where(x => x.Code != null).Select(x => x.Code.ToLower()).Contains(data.ToLower());
         }
     }
 }
